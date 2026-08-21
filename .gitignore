@@ -1,0 +1,9 @@
+.gradle/
+.idea/
+build/
+app/build/
+local.properties
+*.iml
+__pycache__/
+*.py[cod]
+gradle/gradle-daemon-jvm.properties
