@@ -5,9 +5,11 @@ from collections import deque
 
 POSE_FMT = '<IHHIIQQ7fBBBB'
 CONTROL_FMT = '<IHHIQII'
-POSE_MAGIC, CONTROL_MAGIC = 0x54443350, 0x54433350
+LENS_FMT = '<IHHI4fI'
+POSE_MAGIC, CONTROL_MAGIC, LENS_MAGIC = 0x54443350, 0x54433350, 0x534E4C50
 assert struct.calcsize(POSE_FMT) == 64
 assert struct.calcsize(CONTROL_FMT) == 28
+assert struct.calcsize(LENS_FMT) == 32
 
 def arcore_to_cry(px, py, pz, qx, qy, qz, qw): return (px, -pz, py), (qx, -qz, qy, qw)
 def percentile(values, p):
@@ -46,6 +48,10 @@ def main():
                 if len(data)==28:
                     magic,ver,cmd,seq,tpc,param,res=struct.unpack(CONTROL_FMT,data)
                     if magic==CONTROL_MAGIC and cmd==2 and seq in pings: print(f'PONG seq={seq} RTT={(now-pings.pop(seq))/1e6:.3f} ms')
+                    continue
+                if len(data)==32:
+                    magic,ver,flags,seq,focal,aperture,focus,ev,iso=struct.unpack(LENS_FMT,data)
+                    if magic==LENS_MAGIC and ver==1: print(f'LENS seq={seq} {focal:.0f}mm f/{aperture:.1f} focus={focus:.2f}m EV{ev:+.0f} ISO{iso} dof={bool(flags&1)} exposure={bool(flags&2)}')
                     continue
                 if len(data)!=64: continue
                 row=struct.unpack(POSE_FMT,data)

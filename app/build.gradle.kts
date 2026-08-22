@@ -6,6 +6,8 @@ plugins {
 
 android { namespace = "tw.bigspring.phonetracker"; compileSdk = 35
     defaultConfig { applicationId = "tw.bigspring.phonetracker"; minSdk = 24; targetSdk = 34; versionCode = 1; versionName = "0.1" }
+    // Personal project: sign release with the debug keystore so the APK is directly installable.
+    buildTypes { release { signingConfig = signingConfigs.getByName("debug") } }
     buildFeatures { compose = true; buildConfig = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
 }
