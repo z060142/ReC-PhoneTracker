@@ -22,6 +22,11 @@ operates the lens.
 - iOS / ARKit is not supported. The wire protocol is platform-neutral, so another client could be
   written later, but nothing exists yet.
 
+## iOS roadmap
+
+An iOS / ARKit port will start as soon as my current phone dies **and** I have saved up enough
+for an iPhone. Both conditions are required; neither has a date.
+
 ## Protocol
 
 Little-endian UDP (TCP also selectable) packets, version 1:
